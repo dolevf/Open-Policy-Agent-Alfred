@@ -56,7 +56,13 @@ Ever wanted to have your own version of [OPA's Playground](https://play.openpoli
 `pip3 install -r requirements.txt`
 
 ### Download OPA binary
+For Linux:
+
 `curl -L -o bin/opa https://openpolicyagent.org/downloads/v0.41.0/opa_linux_amd64_static`
+
+For MacOSX:
+
+`curl -L -o opa https://openpolicyagent.org/downloads/v0.41.0/opa_darwin_amd64`
 
 ### Run Alfred
 `python3 alfred.py`
