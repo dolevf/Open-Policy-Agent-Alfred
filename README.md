@@ -22,6 +22,7 @@ Ever wanted to have your own version of [OPA's Playground](https://play.openpoli
 # How to Install and Use
 ## Clone repository
 `git clone https://github.com/dolevf/Open-Policy-Agent-Alfred`
+
 `cd Open-Policy-Agent-Alfred`
 
 ## Dockerfile
