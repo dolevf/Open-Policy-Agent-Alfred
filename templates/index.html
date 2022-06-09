@@ -159,6 +159,10 @@ hello {
                     resp.coverage.forEach(function (i) {
                         editor.session.addMarker(new Range(i.start -1, 0, i.end -1, 1), "marker", "fullLine");
                     });
+
+                    resp.no_coverage.forEach(function (i) {
+                        editor.session.addMarker(new Range(i.start -1, 0, i.end -1, 1), "marker_red", "fullLine");
+                    });
             }
         };
         var data = JSON.stringify({"data": data, "inputs": inputs, "policy":policy, "coverage":coverage});

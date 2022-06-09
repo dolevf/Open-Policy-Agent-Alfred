@@ -29,12 +29,17 @@ def get_recursively(search_dict, field):
 
     return fields_found
 
-def get_coverage(result):
+def get_coverage(result, covered=True):
     coverage = []
+    key = 'covered'
+    
+    if not covered:
+        key = 'not_covered'
+    
     files = result.get('coverage', {}).get('files', [])
     for f in files:
-        if 'covered' in files[f]:
-            for i in files[f]['covered']:
+        if key in files[f]:
+            for i in files[f][key]:
                 start = i['start']['row']
                 end = i['end']['row']
                 coverage.append({"start":start, "end":end})

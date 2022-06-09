@@ -20,20 +20,23 @@ def evaluate():
     coverage = request.json.get('coverage', False)
 
     result = None
-    covered_lines = []
     output = utils.opa_evaluate(policy, inputs, data, coverage)
+    covered_lines = []
+    non_covered_lines = []
 
     if 'result' in output:
         package_name = utils.get_package_name(policy)
         value = output['result'][0]['expressions'][0]['value']
-        covered_lines = utils.get_coverage(output)
+        covered_lines= utils.get_coverage(output, covered=True)
+        non_covered_lines =  utils.get_coverage(output, covered=False)
         result = utils.get_recursively(value, package_name)
 
-    return jsonify({"result":result, "coverage":covered_lines})
+    print(covered_lines, non_covered_lines)
+    return jsonify({"result":result, "coverage":covered_lines, "no_coverage":non_covered_lines})
 
 @app.context_processor
 def versions():
     return dict(opa_bin_version=OPA_VERSION, app_version=VERSION)
 
 if __name__ == '__main__':
-    app.run(port=5000, host='0.0.0.0')
+    app.run(port=5005, host='0.0.0.0')
