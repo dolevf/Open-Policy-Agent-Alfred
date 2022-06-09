@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/dolevf/Open-Policy-Agent-Alfred/blob/master/static/images/logo.png?raw=true" width="300px" alt="Alfred"/>
+  <img src="https://github.com/dolevf/Open-Policy-Agent-Alfred/blob/main/static/images/logo.png?raw=true" width="300px" alt="Alfred"/>
 </p>
 
 # Open-Policy-Agent-Alfred
@@ -16,7 +16,7 @@ Ever wanted to have your own version of [OPA's Playground](https://play.openpoli
 
 # Screenshot
 <p align="center">
-  <img src="https://github.com/dolevf/Open-Policy-Agent-Alfred/blob/master/static/images/alfred_view.png?raw=true" width="300px" alt="Alfred"/>
+  <img src="https://github.com/dolevf/Open-Policy-Agent-Alfred/blob/main/static/images/alfred_view.png?raw=true" width="300px" alt="Alfred"/>
 </p>
 
 # How to Install and Use
