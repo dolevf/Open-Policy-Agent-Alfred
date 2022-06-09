@@ -28,7 +28,7 @@
                             <label class="form-check-label" for="coverage">Coverage</label>
                             </a>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="https://github.com/dolevf/Open-Policy-Agent-Alfred/issues">Report a Bug</a></li>
+                        <li><a class="dropdown-item" href="https://github.com/dolevf/Open-Policy-Agent-Alfred/issues" target="_blank">Report a Bug</a></li>
                     </ul>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="https://www.openpolicyagent.org/docs/latest/policy-language/" target="_blank">Rego Docs</a></li>
@@ -140,7 +140,7 @@ hello {
 <script>
     function query() {
         var xhr = new XMLHttpRequest();
-        var url = "http://localhost:5000/evaluate";
+        var url = "http://" + window.location.host + "/evaluate";
 
         var policy = editor.getValue();
         var data = editordata.getValue();
