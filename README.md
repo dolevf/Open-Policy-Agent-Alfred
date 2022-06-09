@@ -62,7 +62,7 @@ For Linux:
 
 For MacOSX:
 
-`curl -L -o opa https://openpolicyagent.org/downloads/v0.41.0/opa_darwin_amd64`
+`curl -L -o bin/opa https://openpolicyagent.org/downloads/v0.41.0/opa_darwin_amd64`
 
 ### Run Alfred
 `python3 alfred.py`
