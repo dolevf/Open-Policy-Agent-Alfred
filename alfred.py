@@ -35,4 +35,4 @@ def versions():
     return dict(opa_bin_version=OPA_VERSION, app_version=VERSION)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=5000, host='0.0.0.0')
