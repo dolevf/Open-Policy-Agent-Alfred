@@ -1,0 +1,21 @@
+.marker {
+        position:absolute;
+        background:rgba(100,200,100,0.5);
+        z-index:20
+        }
+#editor {
+    height: 750px;
+    width: 100%;
+}
+#editorinput {
+    height: 250px;
+    width: 100%;
+}
+#editordata {
+    height: 250px;
+    width: 100%;
+}
+#editorresult {
+    height: 200px;
+    width: 100%;
+}
