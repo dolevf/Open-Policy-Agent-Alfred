@@ -6,7 +6,7 @@
 Reasonably usable self-hosted version of OPA's Playground
 
 # About
-Ever wanted to have your own version of [OPA's Playground](https://play.openpolicyagent.org)? Now it's possible!
+Ever wanted to have your own version of [OPA's Playground](https://play.openpolicyagent.org)? now it's possible with a reasonable usable version of the Playground, called Alfred!
 
 # Features
 - Syntax Highlighting
@@ -16,7 +16,7 @@ Ever wanted to have your own version of [OPA's Playground](https://play.openpoli
 
 # Screenshot
 <p align="center">
-  <img src="https://github.com/dolevf/Open-Policy-Agent-Alfred/blob/main/static/images/alfred_view.png?raw=true" width="300px" alt="Alfred"/>
+  <img src="https://github.com/dolevf/Open-Policy-Agent-Alfred/blob/main/static/images/alfred_view.png?raw=true" width="600px" alt="Alfred"/>
 </p>
 
 # How to Install and Use
