@@ -129,6 +129,13 @@ hello {
     function clearPolicyEditor() {
         editorresult.setValue("", 1)
         editor.setValue("", 1)
+        const prevMarkers = editor.session.getMarkers();
+        if (prevMarkers) {
+            const prevMarkersArr = Object.keys(prevMarkers);
+             for (let item of prevMarkersArr) {
+                editor.session.removeMarker(prevMarkers[item].id);
+            }
+        }       
     }
 
     function copyPolicyEditor() {

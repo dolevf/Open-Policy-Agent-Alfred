@@ -11,7 +11,6 @@ def get_recursively(search_dict, field):
     fields_found = []
 
     for key, value in search_dict.items():
-
         if key == field:
             fields_found.append(value)
 
@@ -60,7 +59,9 @@ def get_package_name(text):
     return key_name
 
 def get_opa_version():
-    return run_cmd("./bin/opa version | head -1 | awk -F'Version: ' '{print $2}'")
+    if os.path.exists('bin/opa'):
+        return run_cmd("./bin/opa version | head -1 | awk -F'Version: ' '{print $2}'")
+    return None
 
 def write_file(data, filename):
     f = open(filename, "w")

@@ -1,3 +1,5 @@
+import sys
+import os.path
 import core.utils as utils
 
 from flask import Flask, render_template, request
@@ -19,7 +21,7 @@ def evaluate():
     inputs = request.json.get('inputs', None)
     coverage = request.json.get('coverage', False)
 
-    result = None
+    result = []
     output = utils.opa_evaluate(policy, inputs, data, coverage)
     covered_lines = []
     non_covered_lines = []
@@ -29,9 +31,18 @@ def evaluate():
         value = output['result'][0]['expressions'][0]['value']
         covered_lines= utils.get_coverage(output, covered=True)
         non_covered_lines =  utils.get_coverage(output, covered=False)
-        result = utils.get_recursively(value, package_name)
-
-    print(covered_lines, non_covered_lines)
+        try:
+            result = utils.get_recursively(value, package_name)[0]
+        except IndexError:
+            print('Error obtaining result.')
+    
+    elif 'errors' in output:
+        for err in output['errors']:
+            message = err['message']
+            row = err['location']['row']
+            code = err['code']
+            result.append("{0}: {1}: {2} ".format(row, code, message))
+    
     return jsonify({"result":result, "coverage":covered_lines, "no_coverage":non_covered_lines})
 
 @app.context_processor
@@ -39,4 +50,8 @@ def versions():
     return dict(opa_bin_version=OPA_VERSION, app_version=VERSION)
 
 if __name__ == '__main__':
+    if not os.path.exists('bin/opa'):
+        print('Error: OPA Binary could not be found in/opa')
+        sys.exit(1)
+
     app.run(port=5000, host='0.0.0.0')
