@@ -43,7 +43,10 @@
         <div class="well">
             <div class="form-group">
                 <label for="policy-area"><b>Policy</b></label>
-                <div id="editor"># Welcome to Open Policy Agent Sandbox!
+                <div id="editor"># Alfred v.{{app_version}}
+
+# Welcome to OPA Alfred! The reasonably usable self-hosted alternative to OPA's Playground
+
 # Enter your policy below :-)
 
 package play
@@ -125,6 +128,7 @@ hello {
 <script>
     function clearPolicyEditor() {
         editorresult.setValue("", 1)
+        editor.setValue("", 1)
     }
 
     function copyPolicyEditor() {
