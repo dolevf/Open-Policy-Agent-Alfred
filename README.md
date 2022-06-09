@@ -45,10 +45,10 @@ Ever wanted to have your own version of [OPA's Playground](https://play.openpoli
 
 ## Docker Registry
 ### Pull Alfred from Registry
-`sudo docker pull dolevf/alfred`
+`docker pull dolevf/alfred`
 
 ### Run Alfred Container
-`sudo docker run -d -p 5000:5000 dolevf/alfred`
+`docker run -d -p 5000:5000 dolevf/alfred`
 
 ## Server
 ### Install requirements
