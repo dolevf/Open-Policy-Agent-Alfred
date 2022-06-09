@@ -2,7 +2,7 @@
   <img src="https://github.com/dolevf/Open-Policy-Agent-Alfred/blob/main/static/images/logo.png?raw=true" width="300px" alt="Alfred"/>
 </p>
 
-# Open-Policy-Agent-Alfred
+# OPA Alfred
 Reasonably usable self-hosted version of OPA's Playground
 
 # About
