@@ -17,7 +17,7 @@
 Reasonably usable self-hosted version of OPA's Playground
 
 # About
-Ever wanted to have your own version of [OPA's Playground](https://play.openpolicyagent.org)? now it's possible with a reasonable usable version of the Playground, called Alfred!
+Ever wanted to have your own version of [OPA's Playground](https://play.openpolicyagent.org)? now it's possible with a reasonably usable version of the original Playground, called Alfred!
 
 # Features
 - Syntax Highlighting
