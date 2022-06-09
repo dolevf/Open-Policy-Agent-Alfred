@@ -31,11 +31,10 @@ def get_recursively(search_dict, field):
 
 def get_coverage(result):
     coverage = []
-    print(result)
     files = result.get('coverage', {}).get('files', [])
     for f in files:
-        if 'not_covered' in files[f]:
-            for i in files[f]['not_covered']:
+        if 'covered' in files[f]:
+            for i in files[f]['covered']:
                 start = i['start']['row']
                 end = i['end']['row']
                 coverage.append({"start":start, "end":end})
