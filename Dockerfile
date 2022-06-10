@@ -21,6 +21,7 @@ COPY core /app/core
 COPY static /app/static
 COPY templates /app/templates
 COPY temp /app/temp
+COPY config.py /app
 
 COPY alfred.py /app
 COPY version.py /app

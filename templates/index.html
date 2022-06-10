@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Open Policy Agent Sandbox</title>
+    <title>Open Policy Agent Alfred</title>
     <link rel="icon" type="image/x-icon" href="static/assets/favicon.ico" />
     <link href="static/css/styles.css" rel="stylesheet" />
     <link href="static/css/opa.css" rel="stylesheet" />
@@ -85,7 +85,7 @@ hello {
             <div class="col-md-12">
                 <div class="well">
                     <div class="form-group">
-                        <label for="result-area"><b>Result</b></label>
+                        <label for="result-area"><b>Result</b> <span id="query_eval_ns" style="color:rgb(107, 101, 101); font-size: x-small; font-style: italic;"></span></label>
                         <div id="editorresult"></div>
                       </div>
                 </div>
@@ -93,7 +93,7 @@ hello {
         </div>
     </div>
 </div>
-<div class="btn-group" role="group" aria-label="Basic example">
+<div class="btn-group" role="group">
     <button type="button" class="btn btn-success btn-sm" style="margin-right: 3px;" onclick="query();" title="Evaluate Policy with input and data">Evaluate</button>
     <button type="button" class="btn btn-danger btn-sm mr-1" style="margin-right: 3px;" onclick="clearPolicyEditor();" title="Clears Policy Window">Clear</button>
     <button type="button" class="btn btn-primary btn-sm mr-1" style="margin-right: 3px;" onclick="copyPolicyEditor();" title="Copy Policy Code to Clipboard">Copy to Clipboard</button>
@@ -101,10 +101,8 @@ hello {
   </div>
 </div>
 
-<!-- Bootstrap core JS-->
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="/static/js/scripts.js"></script>
 <script src="/static/assets/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 <script>
     var editor = ace.edit("editor");
@@ -135,7 +133,7 @@ hello {
              for (let item of prevMarkersArr) {
                 editor.session.removeMarker(prevMarkers[item].id);
             }
-        }       
+        }
     }
 
     function copyPolicyEditor() {
@@ -160,6 +158,7 @@ hello {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var resp = JSON.parse(xhr.responseText);
                 editorresult.setValue(JSON.stringify(resp.result, null, 2), 1)
+                document.getElementById("query_eval_ns").textContent = resp.query_eval_ns + " ns";
 
                 if (coverage == true);
                     var Range = ace.require('ace/range').Range;

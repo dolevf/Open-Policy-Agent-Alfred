@@ -23,12 +23,25 @@ Ever wanted to have your own version of [OPA's Playground](https://play.openpoli
 - Syntax Highlighting
 - Coverage Highlighting
 - Data / Input / Policy Editor
+- Restrict Execution of Builtins, such as: `http.send` or `opa.runtime`
 - Download Policy as File / Copy to Clipboard
 
 # Screenshot
 <p align="center">
   <img src="https://github.com/dolevf/Open-Policy-Agent-Alfred/blob/main/static/images/alfred_view.png?raw=true" width="900px" alt="Alfred"/>
 </p>
+
+# Configuration
+There is not a whole lot of configurations required for Alfred. If you want to restrict certain builtins from running in policies, you can do so in `config.py`:
+
+```
+RESTRICTED_BUILTINS = [
+    'http.send',
+    'opa.runtime'
+]
+```
+
+By default, all builtins are allowed.
 
 # How to Install and Use
 ## Clone repository

@@ -1,11 +1,21 @@
 import os
 import json
 import tempfile
+import config
 
 tempfile.tempdir = "./temp"
 
 def run_cmd(cmd):
     return os.popen(cmd).read()
+
+def check_security_policy(policy):
+    allowed = False
+    for line in policy.splitlines():
+        if not line.startswith('#'):
+            for key in config.RESTRICTED_BUILTINS:
+                if key in line.strip():
+                    allowed = key
+    return allowed
 
 def get_recursively(search_dict, field):
     fields_found = []
@@ -31,10 +41,10 @@ def get_recursively(search_dict, field):
 def get_coverage(result, covered=True):
     coverage = []
     key = 'covered'
-    
+
     if not covered:
         key = 'not_covered'
-    
+
     files = result.get('coverage', {}).get('files', [])
     for f in files:
         if key in files[f]:
@@ -44,6 +54,9 @@ def get_coverage(result, covered=True):
                 coverage.append({"start":start, "end":end})
 
     return coverage
+
+def get_query_eval_ns(result):
+    return result.get('metrics', {}).get('timer_rego_query_eval_ns', None)
 
 def get_package_name(text):
     key_name = None
@@ -85,9 +98,9 @@ def opa_evaluate(policy, inputs, data=' ', coverage=False):
     res = None
 
     if data:
-        res = run_cmd(f"./bin/opa eval -d {data_file} -i {input_file} -d {policy_file} data {args}")
+        res = run_cmd(f"./bin/opa eval -d {data_file} -i {input_file} -d {policy_file} --profile data {args}")
     else:
-        res = run_cmd(f"./bin/opa eval -i {input_file} -d {policy_file} data {args}")
+        res = run_cmd(f"./bin/opa eval -i {input_file} -d {policy_file} --profile data {args}")
 
     try:
         res = json.loads(res)

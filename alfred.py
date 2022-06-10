@@ -22,28 +22,34 @@ def evaluate():
     coverage = request.json.get('coverage', False)
 
     result = []
-    output = utils.opa_evaluate(policy, inputs, data, coverage)
     covered_lines = []
     non_covered_lines = []
+    query_eval_ns = None
 
-    if 'result' in output:
-        package_name = utils.get_package_name(policy)
-        value = output['result'][0]['expressions'][0]['value']
-        covered_lines= utils.get_coverage(output, covered=True)
-        non_covered_lines =  utils.get_coverage(output, covered=False)
-        try:
-            result = utils.get_recursively(value, package_name)[0]
-        except IndexError:
-            print('Error obtaining result.')
+    policy_violation_name = utils.check_security_policy(policy)
+    if policy_violation_name:
+        result = ['{} is not allowed to be executed!'.format(policy_violation_name)]
+    else:
+        output = utils.opa_evaluate(policy, inputs, data, coverage)
+        if 'result' in output:
+            package_name = utils.get_package_name(policy)
+            value = output['result'][0]['expressions'][0]['value']
+            query_eval_ns = utils.get_query_eval_ns(output)
+            covered_lines= utils.get_coverage(output, covered=True)
+            non_covered_lines =  utils.get_coverage(output, covered=False)
+            try:
+                result = utils.get_recursively(value, package_name)[0]
+            except IndexError:
+                print('Error obtaining result.')
 
-    elif 'errors' in output:
-        for err in output['errors']:
-            message = err['message']
-            row = err['location']['row']
-            code = err['code']
-            result.append("{0}: {1}: {2} ".format(row, code, message))
+        elif 'errors' in output:
+            for err in output['errors']:
+                message = err['message']
+                row = err['location']['row']
+                code = err['code']
+                result.append("{0}: {1}: {2} ".format(row, code, message))
 
-    return jsonify({"result":result, "coverage":covered_lines, "no_coverage":non_covered_lines})
+    return jsonify({"result":result, "coverage":covered_lines, "no_coverage":non_covered_lines, "query_eval_ns":query_eval_ns})
 
 @app.context_processor
 def versions():
