@@ -43,7 +43,7 @@ RESTRICTED_BUILTINS = [
 
 By default, all builtins are allowed.
 
-# How to Install and Use
+# How to Install
 ## Clone repository
 `git clone https://github.com/dolevf/Open-Policy-Agent-Alfred`
 
