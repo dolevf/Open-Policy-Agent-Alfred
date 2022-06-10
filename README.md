@@ -6,7 +6,7 @@
 * [About](#about)
 * [Features](#features)
 * [Screenshot](#screenshot)
-* [Install](#how-to-install-and-use)
+* [Install](#how-to-install)
   * [Installation - Docker](#docker)
   * [Installation - Docker Registry](#docker-registry)
   * [Installation - Server](#server)
