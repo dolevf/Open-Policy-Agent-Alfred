@@ -35,14 +35,14 @@ def evaluate():
             result = utils.get_recursively(value, package_name)[0]
         except IndexError:
             print('Error obtaining result.')
-    
+
     elif 'errors' in output:
         for err in output['errors']:
             message = err['message']
             row = err['location']['row']
             code = err['code']
             result.append("{0}: {1}: {2} ".format(row, code, message))
-    
+
     return jsonify({"result":result, "coverage":covered_lines, "no_coverage":non_covered_lines})
 
 @app.context_processor
