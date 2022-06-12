@@ -109,18 +109,38 @@ hello {
     editor.session.setMode("ace/mode/golang");
     editor.setShowPrintMargin(false);
 
-    var editorinput = ace.edit("editorinput");
-    editorinput.session.setMode("ace/mode/json");
-    editorinput.setOptions({
-        wrap: false
-    })
-
     var editordata = ace.edit("editordata");
     editordata.session.setMode("ace/mode/yaml");
 
     var editorresult = ace.edit("editorresult");
     editorresult.session.setMode("ace/mode/json");
     editorresult.setReadOnly(true);
+
+    var editorinput = ace.edit("editorinput");
+    editorinput.session.setMode("ace/mode/json");
+
+    // Fonts
+    editor.setOptions({
+        fontFamily: "Roboto Mono",
+        fontSize: "11pt"
+    });
+
+    editorinput.setOptions({
+        fontFamily: "Roboto Mono",
+        fontSize: "11pt",
+        wrap: false
+    });
+
+    editordata.setOptions({
+        fontFamily: "Roboto Mono",
+        fontSize: "11pt"
+    });
+
+    editorresult.setOptions({
+        fontFamily: "Roboto Mono",
+        fontSize: "11pt"
+    });
+
 </script>
 
 <script>
