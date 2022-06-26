@@ -7,14 +7,14 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Open Policy Agent Alfred</title>
-    <link rel="icon" type="image/x-icon" href="static/assets/favicon.ico" />
-    <link href="static/css/styles.css" rel="stylesheet" />
-    <link href="static/css/opa.css" rel="stylesheet" />
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='/assets/favicon.ico') }} " />
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='css/opa.css') }}" rel="stylesheet" />
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#"><img src="static/images/logo.png" width="40px" height="40px"/> OPA Alfred <i style="color:white; font-size: xx-small;">App v.{{app_version}} | OPA v.{{opa_bin_version}}</i></a>
+        <a class="navbar-brand" href="#"><img src="{{ url_for('static', filename='images/logo.png') }}" width="40px" height="40px"/> OPA Alfred <i style="color:white; font-size: xx-small;">App v.{{app_version}} | OPA v.{{opa_bin_version}}</i></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -35,7 +35,10 @@
             </ul>
         </div>
     </div>
+
 </nav>
+<div class="alert alert-dark" role="alert" style="display: none;" id="published_link", name="published_link">
+</div>
 
 <div class="container-fluid">
 <div class="row">
@@ -43,6 +46,9 @@
         <div class="well">
             <div class="form-group">
                 <label for="policy-area"><b>POLICY</b></label>
+                {% if data %}
+                    <div id="editor">{{ data.policy }}</div>
+                {% else %}
                 <div id="editor"># Alfred v.{{app_version}}
 
 # Welcome to OPA Alfred! The reasonably usable self-hosted alternative to OPA's Playground
@@ -56,13 +62,16 @@ default hello = false
 hello {
     m := input.message
     m == "Hello World!!!"
-}</div>
+}
+</div>
+{% endif %}
 
 <div class="btn-group" role="group">
     <button type="button" class="btn btn-success btn-sm" style="margin-right: 3px;" onclick="query();" title="Evaluate Policy with input and data">Evaluate</button>
     <button type="button" class="btn btn-danger btn-sm mr-1" style="margin-right: 3px;" onclick="clearPolicyEditor();" title="Clears Policy Window">Clear</button>
     <button type="button" class="btn btn-primary btn-sm mr-1" style="margin-right: 3px;" onclick="copyPolicyEditor();" title="Copy Policy Code to Clipboard">Copy to Clipboard</button>
     <button type="button" class="btn btn-secondary btn-sm mr-1" style="margin-right: 3px;" onclick="download_policy();" title="Download Policy to Disk">Download Policy</button>
+    <button type="button" class="btn btn-secondary btn-sm mr-1" style="margin-right: 3px;" onclick="publish_policy();" title="Download Policy to Disk">Publish Policy</button>
   </div>
           </div>
         </div>
@@ -73,7 +82,11 @@ hello {
                 <div class="well">
                     <div class="form-group">
                         <label for="input-area"><b>INPUT</b></label>
+                        {% if data %}
+                        <div id="editorinput">{{ data.input }}</div>
+                        {% else %}
                         <div id="editorinput">{"message":"Hello World!!!"}</div>
+                        {% endif %}
                       </div>
                 </div>
             </div>
@@ -83,7 +96,11 @@ hello {
                 <div class="well">
                     <div class="form-group">
                         <label for="data-area"><b>DATA</b></label>
+                        {% if data %}
+                        <div id="editordata">{{ data.data }}</div>
+                        {% else %}
                         <div id="editordata"></div>
+                        {% endif %}
                       </div>
                 </div>
             </div>
@@ -205,6 +222,33 @@ hello {
         document.body.appendChild(element);
         element.click();
         document.body.removeChild(element);
+    }
+
+    function publish_policy() {
+        var xhr = new XMLHttpRequest();
+        var url = "http://" + window.location.host + "/publish";
+
+        var policy = editor.getValue();
+        var data = editordata.getValue();
+        var inputs = editorinput.getValue();
+
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var resp = JSON.parse(xhr.responseText);
+                var div = document.getElementById('published_link');
+                div.style.display = 'block';
+                div.innerHTML = "Click the link to go to your "
+                var aTag = document.createElement('a');
+                aTag.setAttribute('href',"/publish/" + resp.published_link);
+                aTag.setAttribute('target', "_blank");
+                aTag.innerText = "published policy.";
+                div.appendChild(aTag);
+            }
+        };
+        var data = JSON.stringify({"data": data, "inputs": inputs, "policy":policy});
+        xhr.send(data);
     }
 </script>
 <footer class="page-footer font-small bg-dark">

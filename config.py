@@ -6,3 +6,5 @@ RESTRICTED_BUILTINS = [
     # 'http.send',
     # 'opa.runtime'
 ]
+
+SQLITE3_DB_FILE_NAME = 'policies.db'

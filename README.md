@@ -21,6 +21,7 @@ Ever wanted to have your own version of [OPA's Playground](https://play.openpoli
 
 # Features
 - Syntax Highlighting
+- Policy Publishing
 - Coverage Highlighting
 - Data / Input / Policy Editor
 - Restrict Execution of Builtins, such as: `http.send` or `opa.runtime`

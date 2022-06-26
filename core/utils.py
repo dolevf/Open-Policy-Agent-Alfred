@@ -2,8 +2,12 @@ import os
 import json
 import tempfile
 import config
+import uuid
 
 tempfile.tempdir = "./temp"
+
+def generate_uuid():
+    return str(uuid.uuid4()).replace('-','')[0:8]
 
 def run_cmd(cmd):
     return os.popen(cmd).read()

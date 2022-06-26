@@ -22,11 +22,11 @@ COPY static /app/static
 COPY templates /app/templates
 COPY temp /app/temp
 COPY config.py /app
-
+COPY setup.py /app
 COPY alfred.py /app
 COPY version.py /app
 
-
+RUN python3 setup.py
 RUN chown -R nobody. /app
 
 USER nobody

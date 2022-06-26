@@ -1,8 +1,10 @@
 import sys
 import os.path
+import sqlite3
+import config
 import core.utils as utils
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from flask import jsonify
 from version import VERSION
 
@@ -13,6 +15,25 @@ OPA_VERSION = utils.get_opa_version()
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/publish/<policyid>')
+def published_view(policyid):
+    policy = policyid.strip()
+    con = sqlite3.connect(config.SQLITE3_DB_FILE_NAME)
+    row = None
+    data = {}
+    with con:
+        cur = con.cursor()
+        cur.execute('SELECT id ,policy, data, input FROM policies WHERE id = ?', (policy,))
+        row = cur.fetchone()
+
+    if row:
+        data['id'] = row[0]
+        data['policy'] = row[1]
+        data['data'] = row[2]
+        data['input'] = row[3]
+
+    return render_template('index.html', data=data)
 
 @app.route('/evaluate', methods=['POST'])
 def evaluate():
@@ -51,6 +72,22 @@ def evaluate():
 
     return jsonify({"result":result, "coverage":covered_lines, "no_coverage":non_covered_lines, "query_eval_ns":query_eval_ns})
 
+@app.route('/publish', methods=['POST'])
+def publish():
+    policy = request.json.get('policy', None)
+    data = request.json.get('data', '') or ''
+    inputs = request.json.get('inputs', None)
+    p_id = utils.generate_uuid()
+
+    con = sqlite3.connect(config.SQLITE3_DB_FILE_NAME)
+
+    with con:
+        cur = con.cursor()
+        cur.execute('INSERT INTO policies (id, policy, data, input) VALUES (?,?,?,?)', (p_id, policy, data, inputs))
+
+    return jsonify({"published_link":p_id})
+
+
 @app.context_processor
 def versions():
     return dict(opa_bin_version=OPA_VERSION, app_version=VERSION)
@@ -60,4 +97,4 @@ if __name__ == '__main__':
         print('Error: OPA Binary could not be found in/opa')
         sys.exit(1)
 
-    app.run(port=5000, host='0.0.0.0')
+    app.run(port=5000, host='0.0.0.0', debug=True)
