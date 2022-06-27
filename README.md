@@ -68,6 +68,7 @@ By default, all builtins are allowed.
 ### Install requirements
 
 `pip3 install -r requirements.txt`
+
 `python3 setup.py`
 
 ### Download OPA binary
