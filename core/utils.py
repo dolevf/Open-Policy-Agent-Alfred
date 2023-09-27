@@ -2,6 +2,7 @@ import os
 import json
 import tempfile
 import config
+import sqlite3
 import uuid
 
 tempfile.tempdir = "./temp"
@@ -116,3 +117,11 @@ def opa_evaluate(policy, inputs, data=' ', coverage=False):
             os.remove(temp_file)
 
     return res
+
+def create_db():
+    connection = sqlite3.connect(config.SQLITE3_DB_FILE_NAME)
+    cursor = connection.cursor()
+    cursor.execute('''CREATE TABLE IF NOT EXISTS policies
+                (id TEXT, policy TEXT, data TEXT, input TEXT)''')
+    connection.commit()
+    connection.close()

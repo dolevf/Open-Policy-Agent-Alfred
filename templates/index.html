@@ -53,7 +53,9 @@
 
 # Welcome to OPA Alfred! The reasonably usable self-hosted alternative to OPA's Playground
 
-# Enter your policy below :-)
+# Found a bug? report at https://github.com/dolevf/Open-Policy-Agent-Alfred/issues
+
+# Enter your policy below
 
 package play
 
@@ -127,7 +129,7 @@ hello {
     var editor = ace.edit("editor");
     editor.session.setMode("ace/mode/golang");
     editor.setShowPrintMargin(false);
-
+    
     var editordata = ace.edit("editordata");
     editordata.session.setMode("ace/mode/yaml");
 
@@ -140,23 +142,19 @@ hello {
 
     // Fonts
     editor.setOptions({
-        fontFamily: "Roboto Mono",
         fontSize: "10pt"
     });
 
     editorinput.setOptions({
-        fontFamily: "Roboto Mono",
         fontSize: "10pt",
         wrap: false
     });
 
     editordata.setOptions({
-        fontFamily: "Roboto Mono",
         fontSize: "10pt"
     });
 
     editorresult.setOptions({
-        fontFamily: "Roboto Mono",
         fontSize: "10pt"
     });
 
@@ -252,7 +250,7 @@ hello {
     }
 </script>
 <footer class="page-footer font-small bg-dark">
-    <div class="footer-copyright text-center py-3" style="color: white;">&hearts; Built by <a href="mailto:dolev@lethalbit.com">Dolev Farhi</a></div>
+    <div class="footer-copyright text-center py-3" style="color: white;">Built by <a href="mailto:dolev@lethalbit.com">Dolev Farhi</a></div>
 </footer>
 </body>
 </html>

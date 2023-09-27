@@ -69,16 +69,15 @@ By default, all builtins are allowed.
 
 `pip3 install -r requirements.txt`
 
-`python3 setup.py`
 
 ### Download OPA binary
 For Linux:
 
-`curl -L -o bin/opa https://openpolicyagent.org/downloads/v0.41.0/opa_linux_amd64_static`
+`curl -L -o bin/opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64_static`
 
 For MacOSX:
 
-`curl -L -o bin/opa https://openpolicyagent.org/downloads/v0.41.0/opa_darwin_amd64`
+`curl -L -o bin/opa https://openpolicyagent.org/downloads/latest/opa_darwin_amd64`
 
 ### Set permissions
 `chmod u+x bin/opa`

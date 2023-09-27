@@ -96,5 +96,7 @@ if __name__ == '__main__':
     if not os.path.exists('bin/opa'):
         print('Error: OPA Binary could not be found in/opa')
         sys.exit(1)
-
-    app.run(port=5000, host='0.0.0.0', debug=True)
+    if not os.path.exists(config.SQLITE3_DB_FILE_NAME):
+        utils.create_db()
+        
+    app.run(port=5000, host='0.0.0.0', debug=False)
