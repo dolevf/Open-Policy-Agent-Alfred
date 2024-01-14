@@ -1,4 +1,4 @@
-FROM python:3.9-alpine
+FROM python:3-alpine
 
 LABEL description="OPA Alfred"
 LABEL github="https://github.com/dolevf/Open-Policy-Agent-Alfred"
