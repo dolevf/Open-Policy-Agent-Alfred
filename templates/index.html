@@ -1,59 +1,180 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>Open Policy Agent Alfred</title>
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='/assets/favicon.ico') }} " />
-    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet" />
-    <link href="{{ url_for('static', filename='css/opa.css') }}" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OPA Playground</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+
+    .marker {
+        position:absolute;
+        background:rgba(100,200,100,0.5);
+        z-index:20
+    }
+
+    .marker_red {
+        position:absolute;
+        background:rgba(221, 41, 5, 0.5);
+        z-index:20
+    }
+
+    .success-message {
+        background-color: #d4edda;
+        color: #155724;
+        padding: 15px;
+        margin: 10px;
+        border: 1px solid #c3e6cb;
+        border-radius: 4px;
+        font-family: Arial, sans-serif;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      background-color: #7600cb;
+      color: white;
+    }
+
+    .navbar-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: white;
+      font-family: Arial, sans-serif; 
+    }
+
+    .navbar-title img {
+         margin-bottom: -8px;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-btn {
+      background-color: #7600cb;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background-color: white;
+      min-width: 150px;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+      z-index: 1;
+    }
+
+    .dropdown-content a {
+      color: black;
+      padding: 0.5rem 1rem;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #f1f1f1;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .container {
+      display: flex;
+      height: calc(100vh - 60px);
+      padding: 1rem;
+      gap: 1rem;
+    }
+
+    .column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .input-area,
+    .result-area,
+    .data-area {
+      flex: 1;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 0.75rem;
+      font-family: monospace;
+      font-size: 0.95rem;
+      resize: none;
+    }
+
+    .split-column {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 1rem;
+    }
+
+    /* Buttons container */
+    .button-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .button-row button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      background-color: #007bff;
+      color: white;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .button-row button:hover {
+      background-color: #0056b3;
+    }
+  </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#"><img src="{{ url_for('static', filename='images/logo.png') }}" width="40px" height="40px"/> OPA Alfred <i style="color:white; font-size: xx-small;">App v.{{app_version}} | OPA v.{{opa_bin_version}}</i></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Main</a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Options</a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        </li>
-                        <li><a class="dropdown-item" href="#">
-                            <input class="form-check-input" type="checkbox" value="" id="coverage">
-                            <label class="form-check-label" for="coverage">Coverage</label>
-                            </a>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="https://github.com/dolevf/Open-Policy-Agent-Alfred/issues" target="_blank">Report a Bug</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item"><a class="nav-link" href="https://www.openpolicyagent.org/docs/latest/policy-language/" target="_blank">Rego Docs</a></li>
-            </ul>
-        </div>
+
+  <div class="navbar">
+    <div class="navbar-title"><img src="{{ url_for('static', filename='images/logo.png') }}" width="30px" height="30px"/> OPA Alfred <i style="color:white; font-size: xx-small;">App v.{{app_version}} | OPA v.{{opa_bin_version}}</i></div>
+    <div class="dropdown">
+     
+      <button class="dropdown-btn">Menu ▾</button>
+      <div class="dropdown-content">
+        <a href="#"><input type="checkbox" id="coverage" name="coverage" value="true"> Coverage</a>
+        <a href="https://github.com/dolevf/Open-Policy-Agent-Alfred/issues" target="_blank">File a Bug</a>
+      </div>
+      <button class="dropdown-btn"></button>
     </div>
+  </div>
 
-</nav>
-<div class="alert alert-dark" role="alert" style="display: none;" id="published_link", name="published_link">
-</div>
+  <div class="success-message" style="display: none;" id="published_link", name="published_link"></div>
 
-<div class="container-fluid">
-<div class="row">
-    <div class="col-md-7">
-        <div class="well">
-            <div class="form-group">
-                <label><b>POLICY</b></label>
-                {% if data %}
-                    <div id="editor">{{ data.policy }}</div>
-                {% else %}
-                <div id="editor"># Alfred v.{{app_version}}
+  <div class="container">
+    <!-- Left: Policy Input -->
+    <div class="column split-column">
+      <b>Policy</b>
+      <div id="editor" class="input-area"># Alfred v.{{app_version}}
 
 # Welcome to OPA Alfred! The reasonably usable self-hosted alternative to OPA's Playground
-
-# Found a bug? report at https://github.com/dolevf/Open-Policy-Agent-Alfred/issues
 
 # Enter your policy below
 
@@ -66,103 +187,81 @@ hello if {
     m == "Hello World!!!"
 }
 </div>
-{% endif %}
 
-<div class="btn-group" role="group">
-    <button type="button" class="btn btn-success btn-sm" style="margin-right: 3px;" onclick="query();" title="Evaluate Policy with input and data">Evaluate</button>
-    <button type="button" class="btn btn-danger btn-sm mr-1" style="margin-right: 3px;" onclick="clearPolicyEditor();" title="Clears Policy Window">Clear</button>
-    <button type="button" class="btn btn-primary btn-sm mr-1" style="margin-right: 3px;" onclick="copyPolicyEditor();" title="Copy Policy Code to Clipboard">Copy to Clipboard</button>
-    <button type="button" class="btn btn-secondary btn-sm mr-1" style="margin-right: 3px;" onclick="download_policy();" title="Download Policy to Disk">Download Policy</button>
-    <button type="button" class="btn btn-secondary btn-sm mr-1" style="margin-right: 3px;" onclick="publish_policy();" title="Download Policy to Disk">Publish Policy</button>
+      <!-- Buttons below the policy input -->
+      <div class="button-row">
+        <button onclick="query();">Evaluate</button>
+        <button onclick="copyPolicyEditor();">Copy to Clipboard</button>
+        <button style="background-color:black" onclick="download_policy();">Download</button>
+        <button style="background-color:green" onclick="publish_policy();">Publish</button>
+        <button style="background-color:red" onclick="clearPolicyEditor();">Clear</button>
+      </div>
+    </div>
+
+    <!-- Right: Input and Result -->
+    <div class="column split-column">
+      <b>Input</b>
+        <div id="editor_input" class="input-area"></div>
+      <b>Data</b>
+      <div id="editor_data" class="data-area"></div>
+      <label><b>Result</b> <span id="query_eval_ns" style="color:rgb(107, 101, 101); font-size: x-small; font-style: italic;"></span></label>
+      <div id="editor_result" class="result-area"></div>
+    </div>
   </div>
-          </div>
-        </div>
-    </div>
-    <div class="col-md-5">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="well">
-                    <div class="form-group">
-                        <label><b>INPUT</b></label>
-                        {% if data %}
-                        <div id="editorinput">{{ data.input }}</div>
-                        {% else %}
-                        <div id="editorinput">{"message":"Hello World!!!"}</div>
-                        {% endif %}
-                      </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="well">
-                    <div class="form-group">
-                        <label><b>DATA</b></label>
-                        {% if data %}
-                        <div id="editordata">{{ data.data }}</div>
-                        {% else %}
-                        <div id="editordata"></div>
-                        {% endif %}
-                      </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="well">
-                    <div class="form-group">
-                        <label><b>OUTPUT</b> <span id="query_eval_ns" style="color:rgb(107, 101, 101); font-size: x-small; font-style: italic;"></span></label>
-                        <div id="editorresult"></div>
-                      </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-</div>
+</body>
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/static/assets/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 <script>
     var editor = ace.edit("editor");
     editor.session.setMode("ace/mode/golang");
     editor.setShowPrintMargin(false);
     
-    var editordata = ace.edit("editordata");
-    editordata.session.setMode("ace/mode/yaml");
+    var editor_data = ace.edit("editor_data");
+    editor_data.session.setMode("ace/mode/yaml");
 
-    var editorresult = ace.edit("editorresult");
-    editorresult.session.setMode("ace/mode/json");
-    editorresult.setReadOnly(true);
+    var editor_input = ace.edit("editor_input");
+    editor_input.session.setMode("ace/mode/json");
 
-    var editorinput = ace.edit("editorinput");
-    editorinput.session.setMode("ace/mode/json");
-
+    var editor_result = ace.edit("editor_result");
+    editor_result.session.setMode("ace/mode/json");
+    editor_result.setOptions({
+        readOnly: true,
+        highlightActiveLine: false, 
+        highlightGutterLine: false,
+        showLineNumbers: false
+    });
+    
+    editor_result.renderer.$cursorLayer.element.style.display = "none"
     // Fonts
     editor.setOptions({
-        fontSize: "10pt"
+        fontSize: "10pt",
+        fontFamily: "Arial, sans-serif;"
     });
 
-    editorinput.setOptions({
+    editor_input.setOptions({
         fontSize: "10pt",
+        fontFamily: "Arial, sans-serif;",
         wrap: false
     });
 
-    editordata.setOptions({
-        fontSize: "10pt"
+    editor_data.setOptions({
+        fontSize: "10pt",
+        fontFamily: "Arial, sans-serif;"
     });
 
-    editorresult.setOptions({
-        fontSize: "10pt"
+    editor_result.setOptions({
+        fontSize: "10pt",
+        fontFamily: "Arial, sans-serif;"
     });
 
 </script>
 
+
 <script>
     function clearPolicyEditor() {
-        editorresult.setValue("", 1)
+        editor_result.setValue("", 1)
         editor.setValue("", 1)
         const prevMarkers = editor.session.getMarkers();
         if (prevMarkers) {
@@ -185,8 +284,8 @@ hello if {
         var url = window.location.protocol + "//" + window.location.host + "/evaluate";
 
         var policy = editor.getValue();
-        var data = editordata.getValue();
-        var inputs = editorinput.getValue();
+        var data = editor_data.getValue();
+        var inputs = editor_input.getValue();
         var coverage = document.getElementById('coverage').checked
 
         xhr.open("POST", url, true);
@@ -194,7 +293,7 @@ hello if {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var resp = JSON.parse(xhr.responseText);
-                editorresult.setValue(JSON.stringify(resp.result, null, 2), 1)
+                editor_result.setValue(JSON.stringify(resp.result, null, 2), 1)
                 document.getElementById("query_eval_ns").textContent = resp.query_eval_ns + " ns";
 
                 if (coverage == true);
@@ -227,8 +326,8 @@ hello if {
         var url = window.location.protocol + "//" + window.location.host + "/publish";
 
         var policy = editor.getValue();
-        var data = editordata.getValue();
-        var inputs = editorinput.getValue();
+        var data = editor_data.getValue();
+        var inputs = editor_input.getValue();
 
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-Type", "application/json");
@@ -237,11 +336,11 @@ hello if {
                 var resp = JSON.parse(xhr.responseText);
                 var div = document.getElementById('published_link');
                 div.style.display = 'block';
-                div.innerHTML = "Click the link to go to your "
+                div.innerHTML = ""
                 var aTag = document.createElement('a');
                 aTag.setAttribute('href',"/publish/" + resp.published_link);
                 aTag.setAttribute('target', "_blank");
-                aTag.innerText = "published policy.";
+                aTag.innerText = `Your published policy (ID # ${resp.published_link})`;
                 div.appendChild(aTag);
             }
         };
@@ -249,8 +348,7 @@ hello if {
         xhr.send(data);
     }
 </script>
-<footer class="page-footer font-small bg-dark">
-    <div class="footer-copyright text-center py-3" style="color: white;">Built by <a href="mailto:dolev@lethalbit.com">Dolev Farhi</a></div>
-</footer>
-</body>
+
+
 </html>
+

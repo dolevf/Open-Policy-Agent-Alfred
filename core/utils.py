@@ -61,7 +61,8 @@ def get_coverage(result, covered=True):
     return coverage
 
 def get_query_eval_ns(result):
-    return result.get('metrics', {}).get('timer_rego_query_eval_ns', None)
+    return result['profile'][-1].get('total_time_ns', None)
+    #return result.get('metrics', {}).get('timer_rego_query_eval_ns', None)
 
 def get_package_name(text):
     key_name = None

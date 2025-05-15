@@ -8,7 +8,7 @@ from flask import Flask, render_template, request, redirect
 from flask import jsonify
 from version import VERSION
 
-app = Flask(__name__,  static_url_path='/static',  static_folder='static/',)
+app = Flask(__name__)
 
 OPA_VERSION = utils.get_opa_version()
 
@@ -99,4 +99,4 @@ if __name__ == '__main__':
     if not os.path.exists(config.SQLITE3_DB_FILE_NAME):
         utils.create_db()
         
-    app.run(port=5000, host='0.0.0.0', debug=False)
+    app.run(port=5000, host='0.0.0.0', debug=True)
