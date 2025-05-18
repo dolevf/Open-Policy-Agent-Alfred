@@ -1,4 +1,4 @@
-FROM python:3-alpine
+FROM python:3-bullseye
 
 LABEL description="OPA Alfred"
 LABEL github="https://github.com/dolevf/Open-Policy-Agent-Alfred"
@@ -8,8 +8,10 @@ ARG TARGET_FOLDER=/app
 
 WORKDIR $TARGET_FOLDER/
 
+RUN groupadd -r appuser && useradd -r -g appuser appuser
+
 RUN mkdir /app/bin
-RUN apk add --update curl
+RUN apt-get install curl
 RUN curl -L -o bin/opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64_static
 RUN chmod u+x bin/opa
 
@@ -24,9 +26,9 @@ COPY config.py /app
 COPY alfred.py /app
 COPY version.py /app
 
-RUN chown -R nobody. /app
+RUN chown -R appuser. /app
 
-USER nobody
+USER appuser
 
 EXPOSE 5000/tcp
 
