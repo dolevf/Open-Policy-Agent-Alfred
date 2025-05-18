@@ -41,6 +41,7 @@ def evaluate():
     data = request.json.get('data', '') or ''
     inputs = request.json.get('inputs', None)
     coverage = request.json.get('coverage', False)
+    strict = request.json.get('strict', False)
 
     result = []
     covered_lines = []
@@ -51,7 +52,7 @@ def evaluate():
     if policy_violation_name:
         result = ['{} is not allowed to be executed!'.format(policy_violation_name)]
     else:
-        output = utils.opa_evaluate(policy, inputs, data, coverage)
+        output = utils.opa_evaluate(policy, inputs, data, coverage, strict)
         if 'result' in output:
             package_name = utils.get_package_name(policy)
             value = output['result'][0]['expressions'][0]['value']

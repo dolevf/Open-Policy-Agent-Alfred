@@ -87,11 +87,14 @@ def write_file(data, filename):
     f.write(data)
     f.close()
 
-def opa_evaluate(policy, inputs, data=' ', coverage=False):
+def opa_evaluate(policy, inputs, data=' ', coverage=False, strict=False):
     args = ''
 
     if coverage:
         args ='--coverage'
+    
+    if strict:
+        args = '--strict'
 
     policy_file = tempfile.NamedTemporaryFile(prefix='policy-', suffix='.rego').name
     input_file = tempfile.NamedTemporaryFile(prefix='input-', suffix='.text').name

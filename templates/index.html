@@ -9,6 +9,10 @@
       box-sizing: border-box;
     }
 
+    .menu_item {
+      font-size: small;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -66,6 +70,7 @@
       background-color: #7600cb;
       color: white;
       border: none;
+      font-weight: bold;
       cursor: pointer;
       font-size: 1rem;
     }
@@ -159,8 +164,8 @@
      
       <button class="dropdown-btn">Menu ▾</button>
       <div class="dropdown-content">
-        <a href="#"><input type="checkbox" id="coverage" name="coverage" value="true"> Coverage</a>
-        <a href="https://github.com/dolevf/Open-Policy-Agent-Alfred/issues" target="_blank">File a Bug</a>
+        <a href="#" class="menu_item"><input type="checkbox" id="coverage" name="coverage" value="true"> Show Coverage</a>
+        <a href="#" class="menu_item"><input type="checkbox" id="strict" name="strict" value="true"> Strict Mode</a>
       </div>
       <button class="dropdown-btn"></button>
     </div>
@@ -287,6 +292,7 @@ hello if {
         var data = editor_data.getValue();
         var inputs = editor_input.getValue();
         var coverage = document.getElementById('coverage').checked
+        var strict = document.getElementById('strict').checked
 
         xhr.open("POST", url, true);
         xhr.setRequestHeader("Content-Type", "application/json");
@@ -307,7 +313,7 @@ hello if {
                     });
             }
         };
-        var data = JSON.stringify({"data": data, "inputs": inputs, "policy":policy, "coverage":coverage});
+        var data = JSON.stringify({"data": data, "inputs": inputs, "policy":policy, "coverage":coverage, "strict":strict});
         xhr.send(data);
     }
 
