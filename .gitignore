@@ -1,6 +1,7 @@
 # opa
 bin/opa
 policies.db
+temp/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

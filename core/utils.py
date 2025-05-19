@@ -87,6 +87,13 @@ def write_file(data, filename):
     f.write(data)
     f.close()
 
+def opa_format(policy):
+    policy_file = tempfile.NamedTemporaryFile(prefix='policy-', suffix='.rego').name
+    write_file(policy, policy_file)
+    res = run_cmd(f"cat {policy_file} | ./bin/opa fmt --write") 
+    
+    return res
+
 def opa_evaluate(policy, inputs, data=' ', coverage=False, strict=False):
     args = ''
 

@@ -171,7 +171,7 @@
     </div>
   </div>
 
-  <div class="success-message" style="display: none;" id="published_link", name="published_link"></div>
+  <div class="success-message" style="display: none;" id="notification", name="notification"></div>
 
   <div class="container">
     <!-- Left: Policy Input -->
@@ -196,6 +196,7 @@ hello if {
       <!-- Buttons below the policy input -->
       <div class="button-row">
         <button onclick="query();">Evaluate</button>
+        <button onclick="format();">Format</button>
         <button onclick="copyPolicyEditor();">Copy to Clipboard</button>
         <button style="background-color:black" onclick="download_policy();">Download</button>
         <button style="background-color:green" onclick="publish_policy();">Publish</button>
@@ -317,6 +318,23 @@ hello if {
         xhr.send(data);
     }
 
+    function format() {
+        var xhr = new XMLHttpRequest();
+        var url = window.location.protocol + "//" + window.location.host + "/format";
+        var policy = editor.getValue();
+        
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var resp = JSON.parse(xhr.responseText);
+                editor.setValue(resp.result, -1)
+            }
+        };
+        var data = JSON.stringify({"policy":policy});
+        xhr.send(data);
+    }
+
     function download_policy() {
         var element = document.createElement('a');
         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(editor.getValue()));
@@ -340,7 +358,7 @@ hello if {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 var resp = JSON.parse(xhr.responseText);
-                var div = document.getElementById('published_link');
+                var div = document.getElementById('notification');
                 div.style.display = 'block';
                 div.innerHTML = ""
                 var aTag = document.createElement('a');

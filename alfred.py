@@ -35,6 +35,13 @@ def published_view(policyid):
 
     return render_template('index.html', data=data)
 
+@app.route('/format', methods=['POST'])
+def format():
+    policy = request.json.get('policy', None)
+    result = utils.opa_format(policy)
+
+    return jsonify({"result":result})
+
 @app.route('/evaluate', methods=['POST'])
 def evaluate():
     policy = request.json.get('policy', None)
